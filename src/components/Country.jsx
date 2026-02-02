@@ -1,10 +1,15 @@
 import React from 'react'
 import Medal from './Medal'
 
-export default function Country({ name = "United States", onDelete, medals }) {
+export default function Country({ country, onDelete, medals, onIncrement, onDecrement }) {
+  const { name, gold, silver, bronze } = country
+  
   const handleDelete = () => {
     onDelete(name)
   }
+
+  // Calculate total medals for this country
+  const totalMedals = gold + silver + bronze
 
   return (
     <div style={{ 
@@ -13,7 +18,7 @@ export default function Country({ name = "United States", onDelete, medals }) {
       margin: '10px 0', 
       backgroundColor: '#404040',
       overflow: 'hidden',
-      width: '300px'
+      width: '400px'
     }}>
       <div style={{
         backgroundColor: '#505050',
@@ -23,7 +28,12 @@ export default function Country({ name = "United States", onDelete, medals }) {
         alignItems: 'center',
         borderBottom: '1px solid #666'
       }}>
-        <h3 style={{ margin: 0 }}>{name}</h3>
+        <div>
+          <h3 style={{ margin: 0 }}>{name}</h3>
+          <p style={{ margin: '5px 0 0 0', color: '#ccc', fontSize: '14px' }}>
+            Total Medals: {totalMedals}
+          </p>
+        </div>
         <button onClick={handleDelete} style={{ 
           backgroundColor: 'transparent', 
           color: 'white', 
@@ -37,7 +47,14 @@ export default function Country({ name = "United States", onDelete, medals }) {
       </div>
       <div style={{ padding: '15px' }}>
         {medals.map(medal => (
-          <Medal key={medal.id} name={medal.name} />
+          <Medal 
+            key={medal.id} 
+            medalType={medal.name}
+            count={country[medal.name]}
+            countryName={name}
+            onIncrement={onIncrement}
+            onDecrement={onDecrement}
+          />
         ))}
       </div>
     </div>
