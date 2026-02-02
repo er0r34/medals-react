@@ -1,37 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Country from './Country'
 
 export default function App() {
-  const [goldCounts, setGoldCounts] = useState({
-    "United States": 0,
-    "China": 0,
-    "Japan": 0
-  })
+  const medals = useRef([
+    { id: 1, name: "gold" },
+    { id: 2, name: "silver" },
+    { id: 3, name: "bronze" },
+  ]);
 
-  const incrementGold = (countryName) => {
-    setGoldCounts(prev => ({
-      ...prev,
-      [countryName]: prev[countryName] + 1
-    }))
-  }
+  const [countries, setCountries] = useState([
+    { id: 1, name: 'United States' },
+    { id: 2, name: 'China' },
+    { id: 3, name: 'France' },
+  ])
 
-  const resetAllCounts = () => {
-    setGoldCounts({
-      "United States": 0,
-      "China": 0,
-      "Japan": 0
-    })
+  const deleteCountry = (countryName) => {
+    setCountries(prev => prev.filter(country => country.name !== countryName))
   }
 
   return (
     <div style={{ margin: '20px', padding: '20px' }}>
       <h1>Olympic Medals</h1>
-      <Country name="United States" gold={goldCounts["United States"]} onIncrement={incrementGold} />
-      <Country name="China" gold={goldCounts["China"]} onIncrement={incrementGold} />
-      <Country name="Japan" gold={goldCounts["Japan"]} onIncrement={incrementGold} />
-      <button onClick={resetAllCounts} style={{ marginTop: '20px', padding: '10px 20px' }}>
-        Reset All Counters
-      </button>
+      {countries.map(country => (
+        <Country
+          key={country.id}
+          name={country.name}
+          onDelete={deleteCountry}
+          medals={medals.current}
+        />
+      ))}
     </div>
   )
 }
