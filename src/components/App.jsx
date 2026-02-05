@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Country from './Country'
+import NewCountry from './NewCountry'
 
 export default function App() {
   const medals = useRef([
@@ -13,6 +14,11 @@ export default function App() {
     { id: 2, name: "China", gold: 3, silver: 1, bronze: 0 },
     { id: 3, name: "France", gold: 0, silver: 2, bronze: 2 },
   ])
+
+  const addCountry = (countryName) => {
+    const newId = Math.max(...countries.map(c => c.id)) + 1
+    setCountries(prev => [...prev, { id: newId, name: countryName, gold: 0, silver: 0, bronze: 0 }])
+  }
 
   const deleteCountry = (countryName) => {
     setCountries(prev => prev.filter(country => country.name !== countryName))
@@ -48,6 +54,8 @@ export default function App() {
     <div style={{ margin: '20px', padding: '20px' }}>
       <h1>Olympic Medals</h1>
       
+      <NewCountry onAddCountry={addCountry} />
+      
       {/* Display total medals for all countries */}
       <div style={{ 
         backgroundColor: '#f0f0f0', 
@@ -66,16 +74,23 @@ export default function App() {
         </div>
       </div>
 
-      {countries.map(country => (
-        <Country
-          key={country.id}
-          country={country}
-          onDelete={deleteCountry}
-          medals={medals.current}
-          onIncrement={handleIncrement}
-          onDecrement={handleDecrement}
-        />
-      ))}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gap: '20px',
+        maxWidth: '1400px'
+      }}>
+        {countries.map(country => (
+          <Country
+            key={country.id}
+            country={country}
+            onDelete={deleteCountry}
+            medals={medals.current}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+          />
+        ))}
+      </div>
     </div>
   )
 }

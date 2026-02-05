@@ -15,10 +15,10 @@ export default function Country({ country, onDelete, medals, onIncrement, onDecr
     <div style={{ 
       border: '2px solid #ccc', 
       borderRadius: '8px', 
-      margin: '10px 0', 
+      margin: '0', 
       backgroundColor: '#404040',
       overflow: 'hidden',
-      width: '400px'
+      width: '100%'
     }}>
       <div style={{
         backgroundColor: '#505050',
